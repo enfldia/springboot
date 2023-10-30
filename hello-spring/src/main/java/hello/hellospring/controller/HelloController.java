@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Controller
@@ -17,14 +18,15 @@ public class HelloController {
 //    }
 
     @GetMapping("/hellohi")
-    public String hello(Model model){
-        model.addAttribute("data","강경신님");
+    public String hello(Model model) {
+        model.addAttribute("data", "강경신님");
         return "hello";
     }
+
     @GetMapping("/fruit")
-    public String getFruit(Model model){
+    public String getFruit(Model model) {
         //Model 객체를 통해 view(타임리프 html)로 전달
-        Map<String, String> fruitmap = new HashMap<String,String>();
+        Map<String, String> fruitmap = new LinkedHashMap<String, String>();
         fruitmap.put("fruit1", "apple");
         fruitmap.put("fruit2", "banana");
         fruitmap.put("fruit3", "orange");
@@ -44,9 +46,9 @@ public class HelloController {
 
 
     @GetMapping("hello-mvc")
-    public String helloMvc(@RequestParam(value="name",required = false) String name, Model model){
+    public String helloMvc(@RequestParam(value = "name", required = false) String name, Model model) {
         //-->@RequstParam("name") 이라는 명령어로 받아드린 값을 String name에 담는다.
-        model.addAttribute("name",name);    //-->name 에 담긴 값을 attributeName"name"으로 전달
+        model.addAttribute("name", name);    //-->name 에 담긴 값을 attributeName"name"으로 전달
         return "hello-template";
     }
     //@RequestParam("name") String name --> name 이라는 명령어로 받아드린 값을 String name에 담는다.
@@ -58,18 +60,19 @@ public class HelloController {
 
     @GetMapping("hello-string")
     @ResponseBody //http 해더부와 바디부가 있는데 바디부에 데이터를 직접 넣어줌
-    public String helloString(@RequestParam("name") String name){
+    public String helloString(@RequestParam("name") String name) {
         return "hello" + name;
     }
 
     @GetMapping("hello-api")
     @ResponseBody
-    public Hello helloApi(@RequestParam("name") String name){
+    public Hello helloApi(@RequestParam("name") String name) {
         Hello hello = new Hello();
         hello.setName(name);
         return hello;
     }
-    static class Hello{
+
+    static class Hello {
         public String getName() {
             return name;
         }
