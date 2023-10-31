@@ -13,6 +13,10 @@ public class MemoryMemberRepository implements MemberRepository{
     public Member save(Member member) {
         member.setId(++sequence);
         store.put(member.getId(), member);
+//        System.out.println("Store contents:");
+//        for (Map.Entry<Long, Member> entry : store.entrySet()) {
+//            System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
+//        }
         return member;
     }
 
