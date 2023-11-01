@@ -1,6 +1,0 @@
-#database 연동 설정
-spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    #   각자 pc에 만들어 놓은 Database 이름을 써야 합니다.
-    url:
