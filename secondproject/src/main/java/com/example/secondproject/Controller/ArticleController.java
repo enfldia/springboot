@@ -71,4 +71,21 @@ public class ArticleController {
         // 3. 뷰 페이지 설정
         return "articles/edit";
     }
+    @PostMapping("/articles/update") //데이터 수정하기
+    public String update(AritcleForm form){ //ArticleForm 타입(여기선 DTO)의 데이터를 매개변수 form으로 받는다.
+        //1.DTO를 엔티티로 변환
+        Article articleEntity = form.toEntity(); //form을 Entity로 변환하고 articleEntity에 대입
+        //2.엔티티를 DB로 저장
+            //2-1 DB에서 기존 데이터를 가져옴
+            Article target = articleRepository.findById(articleEntity.getId()).orElse(null);
+            // articleEntity의 id 값을 가져와 articleRepository의 findById 메소드로 DB에서 같은 값을 찾고,그걸 Article 타입의 target에 대입
+            //Article은 optional이기 때문에 orElse,orElseGet 등으로 마무리 해줘야한다.
+
+            //2-2 기존 데이터가 있다면 값을 갱신
+            if(target != null){     //만약 타겟이 null이 아니라면
+                articleRepository.save(articleEntity);  //articleEntity의 값을 articleReoisitory의 save 메소드로 DB에 저장
+            }
+            //수정 결과를 페이지로 리다이렉트
+        return "redirect:/articles/" + articleEntity.getId();
+    }
 }
