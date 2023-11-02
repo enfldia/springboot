@@ -16,9 +16,9 @@ import java.util.List;
 @RequiredArgsConstructor //@RequiredArgsConstructor어노테이션은 클래스에 선언된 final 변수들, 필드들을 매개변수로 하는 생성자를 자동으로 생성해주는 어노테이션입니다.
 public class ArticleController {
     private final ArticleRepository articleRepository; //의존성 부여
-    @GetMapping("/article/new")
+    @GetMapping("/articles/new")
     public String newArticleForm(){
-        return "article/new";
+        return "articles/new";
     }
 
     @PostMapping("/articles/create")
@@ -31,15 +31,15 @@ public class ArticleController {
         Article saved = articleRepository.save(article); //article 값을 articleRepository의 save 메소드를 이용해서 article 형태의 saved라는 객체에 대입
         System.out.println(saved.toString()); //저장된 상태의 데이터
 
-        return "redirect:/articles/" ;
+        return "redirect:/articles/" + saved.getId();
     }
 
-    @GetMapping("/aritcles")    //아티클에 저장된 파일 갯수 확인
+    @GetMapping("/articles")    //아티클에 저장된 파일 갯수 확인
     public String index(Model model){
         //1. 모든 Article을 가져온다.
         List<Article> articleEntityList = articleRepository.findAll();
         //2. 가져온 Article 묶음을 뷰로 전달
-        model.addAttribute("articleList",articleEntityList.size());
+        model.addAttribute("articleList",articleEntityList);
         System.out.println("리스트의 총갯수는 ? articles{"+articleEntityList.size()+"}");
         //3. 뷰 페이지 설정
         return "articles/index";
@@ -53,13 +53,13 @@ public class ArticleController {
         //articleRepository의 findById 메소드를 id의 값으로 아이디를 찾는데,값이 없다면 디폴트 값으로 null ;
         //찾은 값을 Article 이라는 데이터 타입의 article Entity 라는 변수이 대입
         // 2. 가져온 데이터를 모델에 등록
-        model.addAttribute("aritcle",articleEntity);
+        model.addAttribute("article",articleEntity);
         //"article"이라는 것에 aritcleEntuty 값을 대입한다.
         // 3. 뷰 페이지 설정
         return "articles/show";
     }
 
-    @GetMapping("/article/{id}/edit")
+    @GetMapping("/articles/{id}/edit")
     public String edit(@PathVariable Long id,Model model){
         // 1. 수정할 데이터 가져오기
         Article articleEntity = articleRepository.findById(id).orElse(null);

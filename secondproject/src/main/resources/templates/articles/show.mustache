@@ -1,23 +1,26 @@
 {{>layouts/header}}
+
 <table class="table">
     <thead>
     <tr>
         <th scope="col">ID</th>
+        <th scope="col">NICKNAME</th>
         <th scope="col">Title</th>
         <th scope="col">Content</th>
     </tr>
     </thead>
     <tbody>
-    {{#articleList}}
+    {{#article}}
         <tr>
             <th>{{id}}</th>
-            <th><a href="/articles/{{id}}">{{title}}</a></th>
+            <th>{{nickname}}</th>
+            <th>{{title}}</th>
             <th>{{content}}</th>
         </tr>
-    {{/articleList}}
+    {{/article}}
     </tbody>
-
-
 </table>
-<a href="/articles/new">New Article</a>
+<a href="/articles/{{id}}/edit" class="btn btn-primary">Edit</a>
+<a href="/articles">GO TO Article List</a>
+
 {{>layouts/footer}}

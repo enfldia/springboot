@@ -1,0 +1,32 @@
+{{>layouts/header}}
+
+{{#article}}
+    <form action="/articles/update" class="container" method="post">
+        <input type="hidden" name="id" value="{{id}}">
+<!--        //사용자가 바꾸면 안되는 데이터(예:PK)를 숨기기 위해 hidden을 사용함.-->
+        <div class="mb-3">
+            <label for="content" class="form-label">닉네임</label>
+            <input type="text" class="form-control" name="nickname" id="nickname" value="{{nickname}}">
+        </div>
+        <div class="mb-3">
+            <label for="title" class="form-label">제목</label>
+<!--            class="form-label" 은 부트스트렙의 form기능으로 form의 머릿말?제목?라벨에 해당한다.-->
+            <input type="text" class="form-control" name="title" id="title" value="{{title}}">
+<!--            class="form-control" 은 부트스트렙의 form기능으로 input이나 textarea에 사용되며-->
+<!--            해당 칸의 크기를 사용자가 직접 조절할 수 있는 기능을 제공한다.-->
+<!--            value는 칸에 입력될 기본 값-->
+            <div class="mb-3">
+                <label for="content" class="form-label">내용</label>
+                <textarea class="form-control" name="content" id="content" rows="3">{{content}}</textarea>
+            </div>
+            <button type="submit" class="btn btn-dark">Submit</button>
+<!--            데이터 제출-->
+            <a href="/articles/{{id}}">Back</a>
+<!--            지정된 주소로 이동-->
+        </div>
+
+    </form>
+{{/article}}
+
+
+{{>layouts/footer}}

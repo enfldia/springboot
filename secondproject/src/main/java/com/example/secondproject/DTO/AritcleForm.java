@@ -6,12 +6,14 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class AritcleForm {
+    private Long id;
+    private String nickname;
     private String title;
     private String content;
-    private String nickName;
+
 
 
     public Article toEntity(){
-        return new Article(null, nickName, title, content);
+        return new Article(id, nickname, title, content);
     }
 }
