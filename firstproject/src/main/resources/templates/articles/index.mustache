@@ -1,0 +1,30 @@
+{{>layouts/header}}
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Title</th>
+        <th scope="col">Content</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#articleList}}
+        <tr>
+            <th>{{id}}</th>
+            <th><a href="/articles/{{id}}">{{title}}</a></th>
+            <th>{{content}}</th>
+        </tr>
+    {{/articleList}}
+    <!--    반복문 역할-->
+
+<!--    타임리프 문법으로 한다면 아래와 같다.-->
+<!--    <tr th:each="article : ${articleList}">-->
+<!--        <th th:text="${article.id}"></th>-->
+<!--        <td th:text="${article.title}"></td>-->
+<!--        <td th:text="${article.content}"></td>-->
+<!--    </tr>-->
+    </tbody>
+</table>
+<a href="/articles/new">New Article</a>
+{{>layouts/footer}}
