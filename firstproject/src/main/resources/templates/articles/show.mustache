@@ -20,6 +20,16 @@
     </tbody>
 </table>
 <a href="/articles/{{article.id}}/edit" class="btn btn-primary">Edit</a>
-<a href="/articles">Go to Article List</a>
+<!--삭제 링크 추가-->
+<a href="/articles/{{article.id}}/delete" class="btn btn-danger" id="delBtn">Delete</a>
 
+<a href="/articles">Go to Article List</a>
 {{>layouts/footer}}
+<script>
+    const delBtn = document.querySelector("#delBtn");
+   delBtn.addEventListener("click", ()=>{
+   alert("삭제 하시겠습니까?");
+   });
+</script>
+
+
