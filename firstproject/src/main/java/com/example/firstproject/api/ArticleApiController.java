@@ -19,63 +19,78 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class ArticleApiController {
+//    private final ArticleService articleService;
     private final ArticleService articleService;
+//    @Autowired
+//    public ArticleApiController(ArticleService articleService) {
+//        this.articleService = articleService;
+//    } ==> @RequiredArgsConstructor 가 대체
 
-
-    @Autowired
-    private  ArticleRepository articleRepository;
+//    @Autowired
+//    private ArticleService articleService; ==< 필드 주입 방식
 
     //Get
+    //게시글 페이지(메인 페이지)를 만들기 위해 list형식으로 받음
     @GetMapping("/api/articles")
     public List<Article> index(){
         return articleService.index();
     }
+
+    //게시글 상세 페이지(단건 조회)
     @GetMapping("/api/articles/{id}")
     public Article show(@PathVariable Long id){
-        return articleRepository.findById(id).orElse(null);
+
+        return articleService.show(id);
     }
 
-    //post
+    //post(게시글 추가(새로 작성))
     @PostMapping("/api/articles")
-    public Article create(@RequestBody ArticleForm dto){
-            Article article = dto.toEntity();
-            return articleRepository.save(article);
+    public ResponseEntity<Article> create(@RequestBody ArticleForm dto){
+          Article create = articleService.create(dto);
+          return (create != null)?
+                  ResponseEntity.status(HttpStatus.OK).body(create) :
+                  ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+    //@RequestBody -> Json 데이터 받기
 
-    //patch(update)
+
+    //patch(update = 게시글 수정)
     @PatchMapping("/api/articles/{id}")
     public ResponseEntity<Article> update(@PathVariable Long id,
                                           @RequestBody ArticleForm dto){
-        //1. DTO 를 엔티티로 변환
-        Article article = dto.toEntity(); //수정한 데이터
-        log.info("id: {},article: {}",id,article.toString());
-        //2. target 조회 -> 수정전 데이터
-        Article target =articleRepository.findById(id).orElse(null);
-        //3. 잘못된 요청 처리
-        if(target ==null || id != article.getId()){ //{id}와 article.getId의 값이 다르면 404를 출력
-            //400 잘못된 요청 응답
-            log.info("잘못된 요청! id:{} ,article: {}", id,article.toString());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
-        //4. 업데이트 및 정상응답(200)
-        target.patch(article);
-        Article update = articleRepository.save(target);
-        return  ResponseEntity.status(HttpStatus.OK).body(update);
-
+        //수정할 id ->  id
+        //article form에서 수정한 데이터
+        Article updated = articleService.update(id,dto);
+        return (updated != null)?
+                ResponseEntity.status(HttpStatus.OK).body(updated) :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
-
+    //ResponseEntity<Article>
+    //Article을 담아서 ResponseEntity로 리턴 값을 보내야한다.
+    //응답코드를 반환 할 수 있다.
+    //ResoponseEntity 의 Article 에 담겨서 JSON으로 반환
+    // 상태코드 200을 JSON에
     @DeleteMapping("/api/articles/{id}")
     public ResponseEntity<Article> delete(@PathVariable Long id){
         //대상 찾기
-        Article target = articleRepository.findById(id).orElse(null);
-        //잘못된 요청처리
-        if(target == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
-        //대상 삭제 후 HttpStatus.OK 상태 코드 받기
-        articleRepository.delete(target);
-        return  ResponseEntity.status(HttpStatus.OK).build();
-        //build()는 보낼 내용이 없을 때 쓰는 내용이 비어있는 응답
-
+        Article deleted = articleService.delete(id);
+        return (deleted != null)?
+                ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+    //ResponseEntity.status(HttpStatus.NO_CONTENT).build() - 204 no_content
+    // 요청이 성공적으로 처리 되었음을 알린다. 또한 응답 본문에는 데이터락 반환되지 않는다.
+    // 코드 추력
+
+    //트렌젝션 -> 예외 발생 -> 롤백
+    @PostMapping("/api/transaction-test")
+    public ResponseEntity<List<Article>> transactionTest(@RequestBody List<ArticleForm> dtos){
+        // Article을 리스트(묶음 단위 전송), ResponseEntity로 감싸서 받음
+        List<Article> createList = articleService.createArticle(dtos);
+
+        return (createList != null)?
+                ResponseEntity.status(HttpStatus.OK).body(createList):
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
 }
