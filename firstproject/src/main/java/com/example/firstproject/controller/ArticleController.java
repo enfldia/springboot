@@ -131,8 +131,12 @@ public class ArticleController {
 
             // 2. 대상 삭제
             if(target != null){
-                articleRepository.delete(target);;
+                articleRepository.delete(target);
                 rttr.addFlashAttribute("msg","삭제가 완료되었습니다.");
+                //rttr.addFlashAttribute로 전달한 값은 url뒤에 붙지 않는다.
+                //일회성이라 리프레시할 경우 데이터가 소멸한다.
+                //또한 2개이상 쓸 경우, 데이터는 소멸한다.
+
             }
             return "redirect:/articles";
         }

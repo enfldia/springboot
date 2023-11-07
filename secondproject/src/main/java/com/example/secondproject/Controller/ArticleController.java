@@ -3,19 +3,23 @@ package com.example.secondproject.Controller;
 import com.example.secondproject.DTO.AritcleForm;
 import com.example.secondproject.Entity.Article;
 import com.example.secondproject.repository.ArticleRepository;
+import com.example.secondproject.service.ArticleService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor //@RequiredArgsConstructor어노테이션은 클래스에 선언된 final 변수들, 필드들을 매개변수로 하는 생성자를 자동으로 생성해주는 어노테이션입니다.
+@Slf4j
 public class ArticleController {
-    private final ArticleRepository articleRepository; //의존성 부여
+    private final ArticleService articleService; //의존성 부여
     @GetMapping("/articles/new")
     public String newArticleForm(){
         return "articles/new";
@@ -28,7 +32,7 @@ public class ArticleController {
         Article article = form.toEntity(); //form 데이터를 article에 대입
         System.out.println(article.toString()); //article 상태의 데이터
         //2. Repository 에게 Entity를 DB로 저장하게함
-        Article saved = articleRepository.save(article); //article 값을 articleRepository의 save 메소드를 이용해서 article 형태의 saved라는 객체에 대입
+        Article saved = articleService.save(article); //article 값을 articleRepository의 save 메소드를 이용해서 article 형태의 saved라는 객체에 대입
         System.out.println(saved.toString()); //저장된 상태의 데이터
 
         return "redirect:/articles/" + saved.getId();
@@ -37,7 +41,7 @@ public class ArticleController {
     @GetMapping("/articles")    //아티클에 저장된 파일 갯수 확인
     public String index(Model model){
         //1. 모든 Article을 가져온다.
-        List<Article> articleEntityList = articleRepository.findAll();
+        List<Article> articleEntityList = articleService.findAll();
         //2. 가져온 Article 묶음을 뷰로 전달
         model.addAttribute("articleList",articleEntityList);
         System.out.println("리스트의 총갯수는 ? articles{"+articleEntityList.size()+"}");
@@ -87,5 +91,25 @@ public class ArticleController {
             }
             //수정 결과를 페이지로 리다이렉트
         return "redirect:/articles/" + articleEntity.getId();
+    }
+    @GetMapping("/article/{id}/delete")
+    public String delete(@PathVariable Long id, RedirectAttributes rttr){
+        //리다이렉트 후 다른 컨트롤러나 뷰로 데이터를 전달할 때 쓰임
+        log.info("삭제 요청이 들어왔습니다.");
+
+        //1. 삭제 대상 가져옴
+        Article target = articleRepository.findById(id).orElse(null);
+        log.info(target.toString());
+
+        //2. 대상 삭제
+        if(target != null){
+            articleRepository.delete(target);
+            rttr.addFlashAttribute("msg","삭제가 완료되었습니다.");
+            //rttr.addFlashAttribute로 전달한 값은 url뒤에 붙지 않는다.
+            //일회성이라 리프레시할 경우 데이터가 소멸한다.
+            //또한 2개이상 쓸 경우, 데이터는 소멸한다.
+        }
+        return "redirect:/articles";
+
     }
 }

@@ -5,7 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class AController {
+public class SecondController {
     @GetMapping("/")
     public String homeView(Model model){
         model.addAttribute("username","상현");
