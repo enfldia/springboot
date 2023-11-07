@@ -41,7 +41,7 @@ public class ArticleController {
     @GetMapping("/articles")    //아티클에 저장된 파일 갯수 확인
     public String index(Model model){
         //1. 모든 Article을 가져온다.
-        List<Article> articleEntityList = articleService.findAll();
+        List<Article> articleEntityList = articleService.index();
         //2. 가져온 Article 묶음을 뷰로 전달
         model.addAttribute("articleList",articleEntityList);
         System.out.println("리스트의 총갯수는 ? articles{"+articleEntityList.size()+"}");

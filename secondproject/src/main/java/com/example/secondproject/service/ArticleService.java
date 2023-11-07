@@ -15,8 +15,23 @@ import java.util.List;
 @Transactional
 public class ArticleService {
     private final ArticleRepository articleRepository;
-    public List<Article> findAll (){
-        List<Article> findAll =articleRepository.findAll();
-        return findAll;
+
+    private List<Article> index (){
+        return articleRepository.findAll();
+        /*List<Article> articlelist = articleRepository.findAll();
+        return articlelist;*/
+
     }
+
+    private Article show(Long id){return  articleRepository.findById(id).orElse(null)}
+    private Article save (Article article){
+        if(article.getId() != null){
+            return null;
+        }
+      return articleRepository.save(article);
+    }
+
+
+
+
 }
