@@ -1,8 +1,10 @@
 package com.example.firstproject.controller;
 
 import com.example.firstproject.DTO.ArticleForm;
+import com.example.firstproject.DTO.CommentDto;
 import com.example.firstproject.entity.Article;
 import com.example.firstproject.repository.ArticleRepository;
+import com.example.firstproject.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -33,7 +35,7 @@ public class ArticleController {
 //    //테스트 어려움
 //    //결합도가 높아서 유지보수 어려움
 
-
+    private final CommentService commentService;
 
 
     @GetMapping("/articles/new")
@@ -80,8 +82,10 @@ public class ArticleController {
 
         // 1. id로 이용해서 데이터를 가져옴
         Article articleEntity = articleRepository.findById(id).orElse(null);
+        List<CommentDto> commentsDtos = commentService.comments(id);
         // 2. 가져온 데이터를 모델에 등록
         model.addAttribute("article",articleEntity);
+        model.addAttribute("commentDtos",commentsDtos);
         //보여줄 페이지를 설정
 
         return "articles/show";
