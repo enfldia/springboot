@@ -53,7 +53,7 @@ public class ArticleController {
     public String show(@PathVariable Long id,Model model){ //@PathVariable 은 겟맵핑 url에 들어있는 변수를 가져오는 어노테이션
         System.out.println("id = " + id);
         // 1. id로 이용해서 데이터를 가져옴
-        Article articleEntity = articleRepository.findById(id).orElse(null);
+        Article articleEntity = articleService.findById(id).orElse(null);
         //articleRepository의 findById 메소드를 id의 값으로 아이디를 찾는데,값이 없다면 디폴트 값으로 null ;
         //찾은 값을 Article 이라는 데이터 타입의 article Entity 라는 변수이 대입
         // 2. 가져온 데이터를 모델에 등록
@@ -87,7 +87,7 @@ public class ArticleController {
 
             //2-2 기존 데이터가 있다면 값을 갱신
             if(target != null){     //만약 타겟이 null이 아니라면
-                articleRepository.save(articleEntity);  //articleEntity의 값을 articleReoisitory의 save 메소드로 DB에 저장
+                articleService.save(articleEntity);  //articleEntity의 값을 articleReoisitory의 save 메소드로 DB에 저장
             }
             //수정 결과를 페이지로 리다이렉트
         return "redirect:/articles/" + articleEntity.getId();

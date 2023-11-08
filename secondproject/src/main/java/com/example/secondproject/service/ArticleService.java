@@ -16,22 +16,27 @@ import java.util.List;
 public class ArticleService {
     private final ArticleRepository articleRepository;
 
-    private List<Article> index (){
-        return articleRepository.findAll();
-        /*List<Article> articlelist = articleRepository.findAll();
-        return articlelist;*/
 
-    }
+    public Article show(Long id){
+        return  articleRepository.findById(id).orElse(null);}
 
-    private Article show(Long id){return  articleRepository.findById(id).orElse(null)}
-    private Article save (Article article){
+
+    public Article save (Article article){
         if(article.getId() != null){
             return null;
         }
       return articleRepository.save(article);
     }
+    public List<Article> index (){
+        /*return articleRepository.findAll();*/
+        List<Article> index = articleRepository.findAll();
+        return index;
 
+    }
 
+    public String findById(Long id){
+        return articleRepository.findById(id);
+    }
 
 
 }
