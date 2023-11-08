@@ -53,7 +53,7 @@ public class ArticleController {
     public String show(@PathVariable Long id,Model model){ //@PathVariable 은 겟맵핑 url에 들어있는 변수를 가져오는 어노테이션
         System.out.println("id = " + id);
         // 1. id로 이용해서 데이터를 가져옴
-        Article articleEntity = articleService.findById(id).orElse(null);
+        Article articleEntity = articleService.findById(id);
         //articleRepository의 findById 메소드를 id의 값으로 아이디를 찾는데,값이 없다면 디폴트 값으로 null ;
         //찾은 값을 Article 이라는 데이터 타입의 article Entity 라는 변수이 대입
         // 2. 가져온 데이터를 모델에 등록
@@ -66,7 +66,7 @@ public class ArticleController {
     @GetMapping("/articles/{id}/edit")
     public String edit(@PathVariable Long id,Model model){
         // 1. 수정할 데이터 가져오기
-        Article articleEntity = articleRepository.findById(id).orElse(null);
+        Article articleEntity = articleService.findById(id);
         //url에서 전달 받은 id를 아티클레포지토리의 파인드바이 아이디 메소드로 값을 찾는다.없다면 null을 받는다.
         //그 값을 아티클 타입의 아티클엔티티라는 변수에 대입한다.
         // 2. 모델에 데이터를 등록
@@ -81,7 +81,7 @@ public class ArticleController {
         Article articleEntity = form.toEntity(); //form을 Entity로 변환하고 articleEntity에 대입
         //2.엔티티를 DB로 저장
             //2-1 DB에서 기존 데이터를 가져옴
-            Article target = articleRepository.findById(articleEntity.getId()).orElse(null);
+            Article target = articleService.findById(articleEntity.getId());
             // articleEntity의 id 값을 가져와 articleRepository의 findById 메소드로 DB에서 같은 값을 찾고,그걸 Article 타입의 target에 대입
             //Article은 optional이기 때문에 orElse,orElseGet 등으로 마무리 해줘야한다.
 
@@ -98,12 +98,12 @@ public class ArticleController {
         log.info("삭제 요청이 들어왔습니다.");
 
         //1. 삭제 대상 가져옴
-        Article target = articleRepository.findById(id).orElse(null);
+        Article target = articleService.findById(id);
         log.info(target.toString());
 
         //2. 대상 삭제
         if(target != null){
-            articleRepository.delete(target);
+            articleService.delete(target);
             rttr.addFlashAttribute("msg","삭제가 완료되었습니다.");
             //rttr.addFlashAttribute로 전달한 값은 url뒤에 붙지 않는다.
             //일회성이라 리프레시할 경우 데이터가 소멸한다.

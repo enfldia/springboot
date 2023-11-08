@@ -34,9 +34,13 @@ public class ArticleService {
 
     }
 
-    public String findById(Long id){
-        return articleRepository.findById(id);
+    public Article findById(Long id){
+        Article article = articleRepository.findById(id).orElse(null);
+        return article;
     }
 
+    public void delete(Article target) {
+        articleRepository.delete(target);
 
+    }
 }
