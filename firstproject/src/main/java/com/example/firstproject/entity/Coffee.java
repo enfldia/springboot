@@ -17,4 +17,11 @@ public class Coffee {
     private String name;
     @Column
     private String price;
+
+    public void patch(Coffee coffee) {
+        if(coffee.name != null)
+            this.name = coffee.name;
+        if(coffee.price != null)
+            this.price = coffee.price;
+    }
 }
