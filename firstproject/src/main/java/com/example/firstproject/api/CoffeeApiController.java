@@ -31,6 +31,16 @@ public class CoffeeApiController {
        return (coffee != null) ? ResponseEntity.status(HttpStatus.OK).body(coffee) :
                                  ResponseEntity.status(HttpStatus.OK).body(null);
     }
+    /*
+    @GetMapping("/api/coffees/{id}")
+    public ResponseEntity<Coffee> show(@PathVariable Long id) {
+        Coffee coffee = coffeeService.show(id);
+        return (coffee != null) ?
+                ResponseEntity.status(HttpStatus.OK).body(coffee) :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+    */
+
 
     @PostMapping("/api/coffees")
     public ResponseEntity<Coffee> create(@RequestBody CoffeeDto coffeeDto){
@@ -45,6 +55,16 @@ public class CoffeeApiController {
                .status(HttpStatus.OK)
                .body(created);
     }
+    /*
+    @PostMapping("/api/coffees")
+    public ResponseEntity<Coffee> create(@RequestBody CoffeeDto coffeeDto) {
+        Coffee created = coffeeService.create(coffeeDto);
+        return (created != null) ?
+                ResponseEntity.status(HttpStatus.CREATED).body(created) :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+    */
+
 
     @PatchMapping("/api/coffees/{id}")
     public ResponseEntity<Coffee> update(@PathVariable Long id,
@@ -66,6 +86,21 @@ public class CoffeeApiController {
         Coffee updated = coffeeService.save(target);
         return ResponseEntity.status(HttpStatus.OK).body(updated);
     }
+    /*
+    @PatchMapping("/api/coffees/{id}")
+    public ResponseEntity<Coffee> update(@PathVariable Long id,
+                                         @RequestBody CoffeeDto coffeeDto) {
+        Coffee updated = coffeeService.update(id, coffeeDto);
+        return (updated != null) ?
+                ResponseEntity.status(HttpStatus.OK).body(updated) :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+    */
+
+
+
+
+
 
     @DeleteMapping("/api/coffees/{id}")
     public ResponseEntity<Coffee> delete(@PathVariable Long id){
@@ -78,4 +113,12 @@ public class CoffeeApiController {
 
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
+    /*
+    @DeleteMapping("/api/coffees/{id}")
+    public ResponseEntity<Coffee> delete(@PathVariable Long id) {
+        Coffee deleted = coffeeService.delete(id);
+        return (deleted != null) ?
+                ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }*/
 }
