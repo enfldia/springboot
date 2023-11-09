@@ -21,3 +21,7 @@ insert into comment(article_id,nickname,body) values(5,'Choi','초밥');
 insert into comment(article_id,nickname,body) values(6,'Park','조깅');
 insert into comment(article_id,nickname,body) values(6,'Kim','유튜브');
 insert into comment(article_id,nickname,body) values(6,'Choi','독서');
+
+INSERT INTO coffee(name, price) VALUES('아메리카노', '4500');
+INSERT INTO coffee(name, price) VALUES('라떼', '5000');
+INSERT INTO coffee(name, price) VALUES('카페 모카', '5500');
