@@ -108,7 +108,7 @@ public class CoffeeApiController {
 
 
     //삭제
-    
+
     @DeleteMapping("/api/coffees/{id}")
     public ResponseEntity<Coffee> delete(@PathVariable Long id){
         Coffee target = coffeeService.show(id);
