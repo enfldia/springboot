@@ -16,14 +16,18 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class CoffeeApiController {
 
+    //의존성 부여
     @Autowired
     private CoffeeService coffeeService;
 
-    //Get
+    //전체 조회
     @GetMapping("/api/coffees")
     public Iterable<Coffee> index(){
         return coffeeService.index();
     }
+
+
+    //단건 조회
 
     @GetMapping("/api/coffees/{id}")
     public ResponseEntity<Coffee> show(@PathVariable Long id){
@@ -41,6 +45,7 @@ public class CoffeeApiController {
     }
     */
 
+    //생성
 
     @PostMapping("/api/coffees")
     public ResponseEntity<Coffee> create(@RequestBody CoffeeDto coffeeDto){
@@ -65,6 +70,7 @@ public class CoffeeApiController {
     }
     */
 
+    //수정
 
     @PatchMapping("/api/coffees/{id}")
     public ResponseEntity<Coffee> update(@PathVariable Long id,
@@ -101,7 +107,8 @@ public class CoffeeApiController {
 
 
 
-
+    //삭제
+    
     @DeleteMapping("/api/coffees/{id}")
     public ResponseEntity<Coffee> delete(@PathVariable Long id){
         Coffee target = coffeeService.show(id);
