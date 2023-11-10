@@ -1,15 +1,12 @@
 package com.example.firstproject.ioc;
 
-import org.springframework.stereotype.Component;
+import lombok.Getter;
+import lombok.Setter;
 
-@Component
+@Getter
+@Setter
 public class Ingredient {
     private String name;
-
-
-    public String getName() {
-        return name;
-    }
 
     public Ingredient(String name) {
         this.name = name;

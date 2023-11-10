@@ -1,6 +1,7 @@
 package com.example.firstproject.ioc;
 
-public class Chiken {
-    public Chiken() {
+public class Chiken extends Ingredient{
+    public Chiken(String name) {
+        super(name);
     }
 }

@@ -1,5 +1,8 @@
 package com.example.firstproject.ioc;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Chef {
 
 

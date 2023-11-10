@@ -38,8 +38,8 @@ class ChefTest {
     @Test
     void 스테이크_요리하기(){
         //준비
-        IngredientFactory ingredientfatory = new IngredientFactory();
-        Chef chef = new Chef(ingredientfatory);
+        //IngredientFactory ingredientfatory = new IngredientFactory();
+        //Chef chef = new Chef(ingredientfatory);
         String menu = "스테이크";
         //수행
         String food = chef.cook(menu);
@@ -52,8 +52,8 @@ class ChefTest {
 
     @Test
     void 크리스피치킨_요리하기(){
-        IngredientFactory ingredientfatory = new IngredientFactory();
-        Chef chef = new Chef(ingredientfatory);
+        //IngredientFactory ingredientfatory = new IngredientFactory();
+        //Chef chef = new Chef(ingredientfatory);
         String menu = "크리스피치킨";
         //수행
         String food = chef.cook(menu);
@@ -70,3 +70,9 @@ class ChefTest {
 //IngredientFactory 메서드는 전달한 문자열에 따라
 //적합한 재료를 반환하도록 한다.
 //Pork 와 Beef 는 Ingredient 를 상속한다.
+
+//객체간 의존성이 높은 코드 : 요구사항에 변경에 취약함
+//DI 로 코드 개선 : 외부의 요구사항이 변경되어도 내부 코드 변경 x
+
+//IOC 컨테이너에 필요한 객체를
+//@Commponent로 등록하고 @Autowired를 통해 가져온다
