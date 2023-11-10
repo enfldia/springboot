@@ -6,6 +6,7 @@ import com.example.firstproject.entity.Comment;
 import com.example.firstproject.repository.ArticleRepository;
 import com.example.firstproject.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class CommentService {
     private final CommentRepository commentRepository;
 
@@ -52,8 +54,12 @@ public class CommentService {
 //                .collect(Collectors.toList());
     }
 
+    @Transactional //DB에 접근하므로 트랜잭션 어노테이션으로 문제가 발생하면 롤백되도록 해야함
     public CommentDto create(Long articleId, CommentDto dto) {
         //게시글 조회 및 예외 발생
+
+        //log.info("입력값 =>{}",articleId);
+        //log.info("입력값 =>{}",dto);
 
        Article article =  articleRepository.findById(articleId)
                 .orElseThrow(() -> new IllegalArgumentException("댓글 생성 실패"));
@@ -64,7 +70,10 @@ public class CommentService {
        //댓글 엔티티를 DB에 저장
        Comment created  = commentRepository.save(comment);
        //Dto로 변경하여 반환
-        return CommentDto.createCommentDto(created);
+        //return CommentDto.createCommentDto(created);
+        CommentDto createds = CommentDto.createCommentDto(created);
+        //log.info("반환값 =>{}",createds);
+        return createds;
     }
 
     public CommentDto update(Long id, CommentDto dto) {
