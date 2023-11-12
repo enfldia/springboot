@@ -29,7 +29,7 @@ public class CommentApiController {
     @PostMapping("/api/articles/{articleId}/comments")
     public ResponseEntity<CommentDto> create(@PathVariable Long articleId,
                                              @RequestBody CommentDto dto){
-        //@RequestBody CommentDto dto = Spring이 Jason 데이터를  CommentDto 개체로 변환하여
+        //@RequestBody CommentDto dto = Spring이 Json 데이터를  CommentDto 개체로 변환하여
         //컨트롤러메서드에 전달. 이후 컨트롤러 메서드에서 dto를 사용할 수 있다.
 
         //서비스에 위임

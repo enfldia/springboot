@@ -1,5 +1,6 @@
 package com.example.secondproject.Entity;
 
+import com.example.secondproject.DTO.CommentDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,4 +31,25 @@ public class Comment {
     @Column
     private String body;
 
+    public static Comment createComment(CommentDto dto, Article article) {
+        //Article 타입의 article 과 CommetDto 타입의 dto를 매개로 받는 Comment 타입의 createComment 란 명의 정적 메소드 생성
+
+        //예외 발생
+        if(dto.getId() != null)
+            throw new IllegalArgumentException("댓글 생성 실패! 댓글에 id가 없어야 합니다.");
+        //매개변수 dto의 id가 null이 아니라면 런타임 에러 발생시키며 ("") 안에 있는 값을 리턴;
+        //런타임 에러는 메소드나 클래스에 적합하지 않는 인자값을 넘겨주었을때 뜨는 에러.
+
+        if(dto.getArticleId() != article.getId())
+            throw new IllegalArgumentException("댓글 생성 실패! 게시글의 id가 잘못 되었습니다.");
+        //매개변수 dto의 ArticleId 와 매개변수 article의 id가 갖지 않을 경우 런타임 에러 발생
+
+        //엔티티 생성 및 반환
+        return new Comment( // 새로운 변수에 값을 답지 않고 바로 Comment 엔티티 값을 리턴.
+                dto.getId(),
+                article,
+                dto.getNickName(),
+                dto.getBody()
+        );
+    }
 }
