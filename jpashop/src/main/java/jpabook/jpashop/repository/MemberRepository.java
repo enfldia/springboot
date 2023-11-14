@@ -9,19 +9,17 @@ import java.util.List;
 
 @Repository
 public class MemberRepository {
+
     @PersistenceContext
     private EntityManager em;
-    // EntityManagerFactory를 생성할 필요가 없다
-
-//    public Long save(Member member){
-//        em.persist(member); // save
+    //EntityManagerFactory를 생성할 필요가 없다.
+//    public  Long save(Member member) {
+//        em.persist(member);//save
 //        return member.getId();
 //    }
-//
-//    public Member find(Long id){
+//    public  Member find(Long id){
 //        return em.find(Member.class, id);
 //    }
-
     public void save(Member member){
         em.persist(member);
     }
@@ -31,13 +29,18 @@ public class MemberRepository {
     }
 
     public List<Member> findAll(){
-        return em.createQuery("select m from m", Member.class)
+        return em.createQuery("select m from Member m", Member.class)
                 .getResultList();
     }
-
     public List<Member> findByName(String name){
         return em.createQuery("select m from Member m where m.name = :name", Member.class)
                 .setParameter("name",name)
                 .getResultList();
     }
+
+
+
+
+
+
 }
