@@ -6,6 +6,7 @@ import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderStatus;
 import jpabook.jpashop.domain.item.Book;
 import jpabook.jpashop.domain.item.Item;
+import jpabook.jpashop.exception.NotEnoughtStockException;
 import jpabook.jpashop.repository.OrderRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -64,5 +65,44 @@ class OrderServiceTest {
         book.setPrice(price);
         em.persist(book);
         return book;
+    }
+
+    @Test
+    void 상품주문_재고수량초과() throws Exception{
+        //Given
+        //1. member 생성
+        //2. item 생성시 재고 10개
+        Member member = createMember();
+        Item item = createBook("시골", 10000, 10  );
+        //3. 재고보다 많은 수량
+        int orderCount = 11;
+
+        //When
+        //orderService를 실행 했을떄
+        //("재고 수량 부족 예외가 발생해야 한다.)
+        // need more stock 예외가 발생해서 테스트 성공하게 만들기
+
+
+        //Then
+        assertThrows(NotEnoughtStockException.class,()->{
+            orderService.order(member.getId(), item.getId(),orderCount);
+        });
+    }
+
+    @Test
+    public void 주문취소(){
+        //Given
+        Member member = createMember();
+        Item item = createBook("시골 JPA",10000,10);
+        int orderCount = 2;
+        Long orderId = orderService.order(member.getId(),item.getId(),orderCount);
+
+        //Whene
+        orderService.cancelOrder(orderId);
+
+        //Then
+        Order getOrder = orderRepository.findOne(orderId);
+        assertEquals(OrderStatus.CANCEL, getOrder.getStatus());
+        assertEquals(10,item.getStockQuantity());
     }
 }
