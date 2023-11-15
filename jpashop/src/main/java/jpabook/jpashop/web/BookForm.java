@@ -11,5 +11,5 @@ public class BookForm {
     private int price;
     private int stockQuantity;
     private String author;
-    private String isnb;
+    private String isbn;
 }
