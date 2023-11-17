@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
@@ -50,5 +51,15 @@ public class MemberController {
     public String loginError(Model model){
         model.addAttribute("loginErrorMsg","아이디 또는 비밀번호를 확인해주세요.");
         return "/member/memberLoginForm";
+    }
+
+    @GetMapping("/")
+    public String index(Model model, Principal principal) {
+        if (principal == null) {
+            model.addAttribute("message", "Hello Spring Security");
+        } else {
+            model.addAttribute("message", "Hello " + principal.getName());
+        }
+        return "main";
     }
 }
