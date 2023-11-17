@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 public @interface RunningTime {
 
 }
-//@RunningTime 이라는 사용자 어노테이션 저으이
+//@RunningTime 이라는 사용자 어노테이션 정의
 //@Target - 대상 지정
-//ElementType 은 클래스, 인터페이스, 열거형 타입에 적용 될 수 있다.
+//@ElementType 은 클래스, 인터페이스, 열거형 타입에 적용 될 수 있다.
 //@interface runningTime 어노테이션을 사용하려면 메소드나 클래스위에 @RunningTime 을 입력.  @RunningTime= 수행 시간
