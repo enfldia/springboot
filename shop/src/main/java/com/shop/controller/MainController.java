@@ -14,7 +14,7 @@ import java.security.Principal;
 public class MainController {
     private final MemberRepository memberRepository;
     @GetMapping("/")
-    public String index(Model model, Principal principal) {
+    public String holloId(Model model, Principal principal) {
         if (principal != null) {
             Member member = memberRepository.findByEmail(principal.getName());
             model.addAttribute("message", member.getName() + "님, 안녕하세요! "  );
