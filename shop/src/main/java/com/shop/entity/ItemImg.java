@@ -21,7 +21,7 @@ public class ItemImg {
 
     private String imgUrl; // 이미지 조회 경롱
 
-    private String repimqYn; // 대표 이미지 여부
+    private String repImqYn; // 대표 이미지 여부
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
