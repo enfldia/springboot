@@ -19,9 +19,7 @@ import java.util.stream.Collectors;
 public class ArticleService {
     private final ArticleRepository articleRepository;
 
-    public List<Article> index(){
-        return  articleRepository.findAll();
-    }
+
 
     //단건 조회
     public Article show(Long id) {
