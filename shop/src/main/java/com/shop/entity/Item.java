@@ -1,6 +1,7 @@
 package com.shop.entity;
 
 import com.shop.constant.ItemSellStatus;
+import com.shop.dto.ItemFormDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -25,7 +26,7 @@ public class Item  extends BaseEntity{
     //null 허용하지 않고 -itemNm 필드는 항상 값을 가져야한다.
     //최대 50자
 
-    @Column(nullable = false)
+    @Column(name = "price",nullable = false)
     private int price; //가격
 
     @Column(nullable = false)
@@ -36,6 +37,14 @@ public class Item  extends BaseEntity{
     private String itemDetail; //상품 상세 설명
     //@Lob - 대용량 데이터를 저장
 
+    @Enumerated(EnumType.STRING)
     private ItemSellStatus itemSellStatus;
 
+    public void updateItem(ItemFormDto itemFormDto) {
+        this.itemNm = itemFormDto.getItemNm();
+        this.price = itemFormDto.getPrice();
+        this.stockNumber = itemFormDto.getStockNumber();
+        this.itemDetail = itemFormDto.getItemDetail();
+        this.itemSellStatus = itemFormDto.getItemSellStatus();
+    }
 }
