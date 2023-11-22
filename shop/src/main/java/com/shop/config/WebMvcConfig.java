@@ -1,6 +1,5 @@
 package com.shop.config;
 
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -16,6 +15,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/images/**")
                 .addResourceLocations(uploadPath);
     }
+
 
     //웹 브라우저로 입력하는 url에 /images로 시작하는 경우
     //uploadPah에 설정한 폴더를 기준으로 파일을 읽어오도록 설정합니다.

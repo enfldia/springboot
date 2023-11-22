@@ -35,5 +35,27 @@ public class Order extends BaseEntity{
     //연관관계 주인은 OrderItem
     //OrderItem 에 Order에 의해서 관리된다.
 
+    public void addOrderItem(OrderItem orderItem){
+        orderItems.add(orderItem); // orderItem 객체를  order 객체의 orderItems 추가
+        orderItem.setOrder(this); // 양방향 연관관계이므로 orderItem 객체 order객체를 셋팅
+    }
+    public static Order createOrder(Member member, List<OrderItem> orderItemList){
+        Order order = new Order();
+        order.setMember(member);
 
+        for(OrderItem orderItem : orderItemList){
+            order.addOrderItem(orderItem);
+        }
+        order.setOrderSatatus(OrderSatatus.ORDER);
+        order.setOrderDate(LocalDateTime.now());
+        return order;
+    }
+
+    public int getTotalPrice(){
+        int totalPrice = 0;
+        for(OrderItem orderItem: orderItems){
+            totalPrice += orderItem.getTotalPrice();
+        }
+        return totalPrice;
+    }//총 주문 금액을 구하는 메소드
 }

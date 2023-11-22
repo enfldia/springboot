@@ -16,7 +16,8 @@ public class FileService {
         //파일에 고유 식별자(UUID) 를 생성, 이를 사용해서 저장된 파일 이름을 만듭니다.
         String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
 
-        //원본 파일에서 확장자를 추출. -> substring(originalFileName.lastIndexOf(".")) -> "." 이후의 문자열
+        //원본 파일에서 확장자를 추출. -> substring(originalFileName.lastIndexOf(".")) -> "." 이후의 문자열(확장자)
+        //위에서 생성한 UUID와 추출한 확장자를 합쳐서 UUID.추출한 확장자 형태의 파일명을 만든다.
         String savedFileName = uuid.toString() + extension;
 
         //고유한 식별자와 추출한 파일을 조합하여 저장될 파일명 생성

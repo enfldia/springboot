@@ -32,6 +32,7 @@ public class ItemImgService {
         //파일 업로드
         if(!StringUtils.isEmpty(oriImgName)){
             imgName = fileService.uploadFile(itemImgLocation, oriImgName, itemImgFile.getBytes());
+            // 저정할 경로, 실제 파일명, 파일의 바이트배열
 
             //uploadFile을 호출하여 파일을 업로드하고
             imgUrl = "/images/item/" + imgName;
@@ -42,6 +43,10 @@ public class ItemImgService {
             //아래 item 폴더에 이미지를 저장
             //이미지를 불러오는 경로는 "/images/item"
         }
+        // 저장한 상품 이미지를 불러올 경로
+        // D:/springboot/shop/ 아래 item에 저장하므로 상품을 불러오는 경로는 /images/item/
+        // 앞에 /images/ 가 붙는 이유는 WebMvcConfig 클래스에서 /images/** 라고 설정해서 이다.
+
         itemImg.updateItemImg(oriImgName, imgName, imgUrl);
         itemImgRepository.save(itemImg);
 
@@ -68,6 +73,9 @@ public class ItemImgService {
 
 
             savedItemImg.updateItemImg(oriImgName, imgName, imgUrl);
+            //지금은 변경감지를 사용해서 따로 저장 로직을 호출하지 않아도 자동 저장된다.
+            //savedItemImg 는 영속 상태 이므로 데이터를 변경하는 것 만으로도 변경감지 동작
+            //트렌젝션이 끝날 때 update 쿼리가 실행
 
         }
     }
