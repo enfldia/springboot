@@ -108,7 +108,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
                                 item.price)
                 ).from(itemImg)
                 .join(itemImg.item, item) // itemImg 와 item 조인해서
-                .where(itemImg.repImqYn.eq("Y")) //대표 이미지
+                .where(itemImg.repImgYn.eq("Y")) //대표 이미지
                 .where(itemNmLike(itemSearchDto.getSearchQuery())) // 상품명 검색
                 .orderBy(item.id.desc()) //상품id를 기준으로 내림차순 정렬
                 .offset(pageable.getOffset())
@@ -118,7 +118,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
                 .select(Wildcard.count)
                 .from(itemImg)
                 .join(itemImg.item, item)
-                .where(itemImg.repImqYn.eq("Y"))
+                .where(itemImg.repImgYn.eq("Y"))
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
                 .fetchOne();
 

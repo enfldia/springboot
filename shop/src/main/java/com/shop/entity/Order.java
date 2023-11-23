@@ -1,6 +1,6 @@
 package com.shop.entity;
 
-import com.shop.constant.OrderSatatus;
+import com.shop.constant.OrderStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,7 +26,7 @@ public class Order extends BaseEntity{
     private LocalDateTime orderDate;//주문일
 
     @Enumerated(EnumType.STRING)
-    private OrderSatatus orderSatatus;//주문상태
+    private OrderStatus orderStatus;//주문상태
 
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL,
                 orphanRemoval = true)//고아 객체 삭제 = 참
@@ -46,7 +46,7 @@ public class Order extends BaseEntity{
         for(OrderItem orderItem : orderItemList){
             order.addOrderItem(orderItem);
         }
-        order.setOrderSatatus(OrderSatatus.ORDER);
+        order.setOrderStatus(OrderStatus.ORDER);
         order.setOrderDate(LocalDateTime.now());
         return order;
     }
@@ -58,4 +58,11 @@ public class Order extends BaseEntity{
         }
         return totalPrice;
     }//총 주문 금액을 구하는 메소드
+
+    public void cancelOrder(){
+        this.orderStatus = OrderStatus.CANCEL; //order=CANCEL
+        for(OrderItem orderItem : orderItems){
+            orderItem.cancel();
+        }
+    }
 }

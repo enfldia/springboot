@@ -41,9 +41,9 @@ public class ItemService {
             ItemImg itemImg = new ItemImg();
             itemImg.setItem(item);//해당 이미지 객체에 상품 정보를 연결
             if(i == 0)
-                itemImg.setRepImqYn("Y"); //이미지넘버가 0 이면 대표이미지
+                itemImg.setRepImgYn("Y"); //이미지넘버가 0 이면 대표이미지
             else
-                itemImg.setRepImqYn("N");
+                itemImg.setRepImgYn("N");
             itemImgService.saveItemImg(itemImg, itemImgFileList.get(i));
         }
         return item.getId();
