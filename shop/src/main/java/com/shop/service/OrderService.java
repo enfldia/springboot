@@ -88,4 +88,20 @@ public class OrderService {
                 .orElseThrow(EntityNotFoundException::new);
         order.cancelOrder();
     }
+
+    public Long orders(List<OrderDto> orderDtoList,String email){
+        Member member = memberRepository.findByEmail(email);
+        List<OrderItem> orderItemList = new ArrayList<>();
+        for(OrderDto orderDto : orderDtoList){
+            //주문할 상품 리스트를 만들어 줍니다.
+            Item item = itemRepository.findById(orderDto.getItemId())
+                    .orElseThrow(EntityNotFoundException::new);
+            OrderItem orderItem = OrderItem.createOrderItem(item, orderDto.getCount());
+            orderItemList.add(orderItem);
+        }
+        Order order = Order.createOrder(member, orderItemList);
+        //현재 로그인한 회원과 주문 상품 목록을 이용하여 주문 엔티티를 만듭니다.
+        orderRepository.save(order);
+        return order.getId();
+    }
 }

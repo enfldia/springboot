@@ -22,6 +22,18 @@ public class Cart extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)// -> 지연 로딩
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public static Cart createCart(Member member){
+        Cart cart = new Cart();
+        cart.setMember(member);
+        return cart;
+    }
+    // 회원 한명 당 1개의 장바구니를 갖으므로 처음 장바구니에 상픔을 담을때
+    // 해당 회원의 장바구니르르 생성해줘야한다.
+    // Cart클래스에 회원 엔티티를 파라미터로 받아서 장바구니 엔티티 생성
+
+
+
     //매핑을 해주면 장바구니 엔티티를 조회하면서 회원 엔티티 정보도
     //동시에 가져올 수 있다.
 
