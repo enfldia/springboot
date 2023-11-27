@@ -3,6 +3,7 @@ package com.shop.controller;
 import com.shop.dto.OrderDto;
 import com.shop.dto.OrderHistDto;
 import com.shop.service.OrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,9 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import javax.naming.Binding;
-import javax.validation.Valid;
-import javax.validation.constraints.Email;
+
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;

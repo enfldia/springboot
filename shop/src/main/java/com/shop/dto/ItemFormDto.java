@@ -2,13 +2,14 @@ package com.shop.dto;
 
 import com.shop.constant.ItemSellStatus;
 import com.shop.entity.Item;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+
 import java.util.ArrayList;
 import java.util.List;
 
