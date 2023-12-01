@@ -1,4 +1,4 @@
-package shopex.constant;
+package shopex.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -88,4 +88,10 @@ public class ThymeleafExController {
         model.addAttribute("param2", param2);
         return "thymeleafEx/thymeleafEx06";
     }
+
+    @GetMapping("/ex07")
+    public String thymeleafExample07(){
+        return "thymeleafEx/thymeleafEx07";
+    }
+
 }
