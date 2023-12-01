@@ -6,15 +6,15 @@ import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+@Getter @Setter
 public class ItemFormDto {
+
     private Long id;
 
     @NotBlank(message = "상품명은 필수 입력 값입니다.")
@@ -23,7 +23,7 @@ public class ItemFormDto {
     @NotNull(message = "가격은 필수 입력 값입니다.")
     private Integer price;
 
-    @NotBlank(message = "상품 상세는 필수 입력 값입니다.")
+    @NotBlank(message = "이름은 필수 입력 값입니다.")
     private String itemDetail;
 
     @NotNull(message = "재고는 필수 입력 값입니다.")
@@ -37,14 +37,14 @@ public class ItemFormDto {
 
     private static ModelMapper modelMapper = new ModelMapper();
 
-
-    public Item createItem(){ //Dto를 엔티티로 변환
-        return modelMapper.map(this,Item.class);
+    public Item crateItem() {
+        return modelMapper.map(this, Item.class);
     }
     //현재 ItemFormDto 객체를 사용해서 Item 엔티티를 생성
-    public static ItemFormDto of(Item item){//엔티티를 Dto로 변환
-        return modelMapper.map(item,ItemFormDto.class);
+
+    public static ItemFormDto of(Item item) {
+        return modelMapper.map(item, ItemFormDto.class);
     }
-    //주어진 Item 엔티티를 사용하여 ItemFormDto를 생성하는 정적 메서드
-    //엔티티의 필드 값을 DTI로 매핑합니다.
+    //주어진 Item 엔티티를 사용하여 ItemFormDto를 생성하는 정적 메서드입니다.
+    //엔티티의 필드 값을 DTO로 매핑합니다.
 }

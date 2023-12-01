@@ -1,17 +1,20 @@
 package com.example.firstproject.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @ToString
+@Getter
 public class Coffee {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동생성
     private Long id;
     @Column
     private String name;
@@ -19,9 +22,9 @@ public class Coffee {
     private String price;
 
     public void patch(Coffee coffee) {
-        if(coffee.name != null)
+        if (coffee.name != null)
             this.name = coffee.name;
-        if(coffee.price != null)
+        if (coffee.price != null)
             this.price = coffee.price;
     }
 }

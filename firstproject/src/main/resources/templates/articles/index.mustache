@@ -1,5 +1,4 @@
 {{>layouts/header}}
-
 <table class="table">
     <thead>
     <tr>
@@ -9,22 +8,26 @@
     </tr>
     </thead>
     <tbody>
-    {{#articleList}}
+    {{#articleList}} <!--반복문 역할-->
         <tr>
             <th>{{id}}</th>
-            <th><a href="/articles/{{id}}">{{title}}</a></th>
-            <th>{{content}}</th>
+            <td><a href="/articles/{{id}}">{{title}}</a></td>
+            <td>{{content}}</td>
         </tr>
     {{/articleList}}
-    <!--    반복문 역할-->
 
-<!--    타임리프 문법으로 한다면 아래와 같다.-->
-<!--    <tr th:each="article : ${articleList}">-->
-<!--        <th th:text="${article.id}"></th>-->
-<!--        <td th:text="${article.title}"></td>-->
-<!--        <td th:text="${article.content}"></td>-->
-<!--    </tr>-->
+<!--  thymeleaf 방식
+    <tr th:each="article : ${articleList}">
+        <th th:text="${article.id}"></th>
+        <td th:text="${article.title}"></td>
+        <td th:text="${article.content}"></td>
+    </tr>
+-->
+
     </tbody>
+
 </table>
 <a href="/articles/new">New Article</a>
+
+
 {{>layouts/footer}}

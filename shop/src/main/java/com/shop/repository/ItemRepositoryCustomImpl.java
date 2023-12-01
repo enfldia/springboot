@@ -24,7 +24,7 @@ import java.util.List;
 public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
     //Impl - implements 약어로 구현을 나타내는 용어
     // 프로그래밍에서 Impl 은 인터페이스나 추상클래스의 실제 구현체를 나타내는 클래스
-    private  JPAQueryFactory queryFactory;
+    private JPAQueryFactory queryFactory;
     //동적쿼리를 생성하기 위해서 JPAQueryFactory 선언
     public ItemRepositoryCustomImpl(EntityManager em){
         this.queryFactory = new JPAQueryFactory(em);
@@ -64,42 +64,40 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
         return null;
     }
 
-
-
     @Override
     public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
         List<Item> content = queryFactory
-                .selectFrom(QItem.item) // item 엔티티 데이터 선택
+                .selectFrom(QItem.item) //item 엔티티 데이터를 선택
                 .where(regDtsAfter(itemSearchDto.getSearchDateType()),
                         searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
                         searchByLike(itemSearchDto.getSearchBy(),
                                 itemSearchDto.getSearchQuery() ))
-                .orderBy(QItem.item.id.desc()) //아이탬 id의 역순 방향
+                .orderBy(QItem.item.id.desc()) //아이템 id의 역순방향
                 .offset(pageable.getOffset()) //페이지 시작 오프셋 설정
                 .limit(pageable.getPageSize()) //페이지의 크기를 설정
-                .fetch(); //쿼리를 실행하고 결과를 리스트로 반환
+                .fetch();// 쿼리를 실행하고 결과를 리스트로 반환
 
-
-        //토탈 카운트 조회 - 상품의 총 갯수를 조회
+        //토탈카운트 조회 - 상품의 총갯수를 조회
         long total = queryFactory.select(Wildcard.count).from(QItem.item) //테이블에서 카운트를 조회하는 쿼리
                 .where(regDtsAfter(itemSearchDto.getSearchDateType()),
                         searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
                         searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
                 .fetchOne()  //카운트 결과를 단일값으로 반환
                 ;
-        //Wildcard.count - QueryDsl 에서 제공하는 쿼리 결과의 행 수
+        //  Wildcard.count - QueryDsl 에서 제공하는 쿼리결과의 행 수
 
         return new PageImpl<>(content, pageable, total);
-        //pageImpl 를 사용하여 페이징된 결과를 Page<Item> 형태로 반환
+        //PageImpl 를 사용하여 페이징된 결과를 Page<Item> 형태로 반환
+
     }
 
     @Override
     public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
         QItem item = QItem.item;
-        QItemImg itemImg = QItemImg.itemImg;
-        //QItem 과 QItemImg 사용해서 QueryDsl에서 사용할 수 있는 객체 정의
+        QItemImg itemImg  =QItemImg.itemImg;
+        //   QItem 과  QItemImg 사용해서 QueryDsl에서 사용할 수 있는 객체정의
         List<MainItemDto> content = queryFactory
-                .select( //MainItemDto를 선택하고
+                .select(  //MainItemDto를 선택하고
                         new QMainItemDto(
                                 item.id,
                                 item.itemNm,
@@ -107,27 +105,29 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
                                 itemImg.imgUrl,
                                 item.price)
                 ).from(itemImg)
-                .join(itemImg.item, item) // itemImg 와 item 조인해서
-                .where(itemImg.repImgYn.eq("Y")) //대표 이미지
-                .where(itemNmLike(itemSearchDto.getSearchQuery())) // 상품명 검색
-                .orderBy(item.id.desc()) //상품id를 기준으로 내림차순 정렬
+                .join(itemImg.item, item) //itemImg /item 조인하여
+                .where(itemImg.repImgYn.eq("Y")) //대표이미지
+                .where(itemNmLike(itemSearchDto.getSearchQuery()))  //상품명검색
+                .orderBy(item.id.desc()) // 상품id를 기준으로 내림차순정력
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())// 페이지 네이션 처리
+                .limit(pageable.getPageSize()) //페이지 네이션처리
                 .fetch();
-        Long total = queryFactory
+        long total = queryFactory
                 .select(Wildcard.count)
                 .from(itemImg)
                 .join(itemImg.item, item)
                 .where(itemImg.repImgYn.eq("Y"))
                 .where(itemNmLike(itemSearchDto.getSearchQuery()))
-                .fetchOne();
-
-                // 전체 갯수를 조회
-            return new PageImpl<>(content, pageable, total);
-            //PageImple 을 사용하여 페이지 네이션된 결과를 page<MainItemDto> 형태로 반환
+                .fetchOne()
+                ; //전체 갯수를 조회
+        return new PageImpl<>(content, pageable, total);
+        // PageImple 을 사용하여 페이지 네이션된 결과를 page<MainItemDto> 형태로 반환
     }
 
     private BooleanExpression itemNmLike(String searchQuery) {
-        return StringUtils.isEmpty(searchQuery) ? null : QItem.item.itemNm.like("%" + searchQuery + "%");
+        return StringUtils.isEmpty(searchQuery) ?
+                null : QItem.item.itemNm.like("%" + searchQuery + "%");
     }
+
+
 }

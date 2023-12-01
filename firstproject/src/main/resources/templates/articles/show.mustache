@@ -1,5 +1,4 @@
 {{>layouts/header}}
-
 <table class="table">
     <thead>
     <tr>
@@ -9,30 +8,22 @@
     </tr>
     </thead>
     <tbody>
-    <!--    반복문 역할-->
-    {{#article}}
+    {{#article}} <!--반복문 역할-->
         <tr>
             <th>{{id}}</th>
-            <th>{{title}}</th>
-            <th>{{content}}</th>
+            <td>{{title}}</td>
+            <td>{{content}}</td>
         </tr>
     {{/article}}
+
     </tbody>
+
 </table>
 <a href="/articles/{{article.id}}/edit" class="btn btn-primary">Edit</a>
 <!--삭제 링크 추가-->
-<a href="/articles/{{article.id}}/delete" class="btn btn-danger" id="delBtn">Delete</a>
+<a href="/articles/{{article.id}}/delete" class="btn btn-danger">Delete</a>
 
-<a href="/articles">Go to Article List</a>
+<a href="/articles" class="btn btn-warning">Go to Article List</a>
 {{>comments/_comments}}
 
-
 {{>layouts/footer}}
-<script>
-    const delBtn = document.querySelector("#delBtn");
-   delBtn.addEventListener("click", ()=>{
-   alert("삭제 하시겠습니까?");
-   });
-</script>
-
-

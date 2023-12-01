@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@ToString
 public class Member {
     @Id
     @GeneratedValue
@@ -22,9 +24,7 @@ public class Member {
     @Embedded
     private Address address;
 
-    @OneToMany(mappedBy = "member") // member가 하인 연관관계의 주인은 order
+    @OneToMany(mappedBy = "member") // member가 하인, order가 연관관계의 주인
     private List<Order> orders = new ArrayList<>();
-
-
 
 }

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: header" />
+<head th:replace="fragments/header :: header"/>
+
 <body>
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
@@ -8,8 +9,7 @@
         <div>
             <form th:object="${orderSearch}" class="form-inline">
                 <div class="form-group mb-2">
-                    <input type="text" th:field="*{memberName}"
-                           class="form-control" placeholder="회원명"/>
+                    <in0put type="text" th:field="*{memberName}" class="form-control" placeholder="회원명">
                 </div>
                 <div class="form-group mx-sm-1 mb-2">
                     <select th:field="*{orderStatus}" class="form-control">
@@ -23,6 +23,7 @@
                 <button type="submit" class="btn btn-primary mb-2">검색</button>
             </form>
         </div>
+
         <table class="table table-striped">
             <thead>
             <tr>
@@ -46,25 +47,26 @@
                 <td th:text="${item.status}"></td>
                 <td th:text="${item.orderDate}"></td>
                 <td>
-                    <a th:if="${item.status.name()== 'ORDER'}" href="#" th:href="'javascript:cancel('+${item.id}+')'"
-                    class="btn btn-danger">CANCEL</a>
+                    <a th:if="${item.status.name() == 'ORDER'}" href="#" th:href="'javascript:cancel('+${item.id}+')'" class="btn btn-danger">CANCEL</a>
                 </td>
             </tr>
+
             </tbody>
         </table>
-
     </div>
 
+    <br>
     <div th:replace="fragments/footer :: footer"/>
 </div>
 </body>
 <script>
-function cancel(id){
-form = document.createElement("form");
-form.setAttribute("method","post");
-form.setAttribute("action","/orders/" + id + "/cancel");
-document.body.appendChild(form);
-form.submit();
-}
+    function cancel(id) {
+    var form = document.createElement("form");
+    form.setAttribute("method", "post");
+    form.setAttribute("action", "/orders/" + id + "/cancel");
+    document.body.appendChild(form);
+    form.submit();
+    }
 </script>
+
 </html>

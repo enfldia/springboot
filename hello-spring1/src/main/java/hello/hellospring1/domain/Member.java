@@ -17,16 +17,6 @@ public class Member {
     //@Column(name="username")
     private String name;
 
-    private String nickname;
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
     public Long getId() {
         return id;
     }
@@ -50,7 +40,6 @@ public class Member {
         return "Member{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", nickname='" + nickname + '\'' +
                 '}';
     }
 }

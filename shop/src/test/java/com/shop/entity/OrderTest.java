@@ -5,25 +5,26 @@ import com.shop.repository.ItemRepository;
 import com.shop.repository.MemberRepository;
 import com.shop.repository.OrderItemRepository;
 import com.shop.repository.OrderRepository;
+import org.aspectj.weaver.ast.Or;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 @TestPropertySource(locations="classpath:application-test.properties")
 @Transactional
 class OrderTest {
+
     @Autowired
     OrderRepository orderRepository;
 
@@ -33,12 +34,13 @@ class OrderTest {
     @Autowired
     MemberRepository memberRepository;
 
+    @Autowired
+    OrderItemRepository orderItemRepository;
+
     @PersistenceContext
     EntityManager em;
 
-    @Autowired
-    OrderItemRepository orderItemRepository;
-    public Item createItem(){
+    public Item createItem() {
         Item item = new Item();
         item.setItemNm("테스트 상품");
         item.setPrice(10000);
@@ -47,15 +49,17 @@ class OrderTest {
         item.setStockNumber(100);
         item.setRegTime(LocalDateTime.now());
         item.setUpdateTime(LocalDateTime.now());
+
         return item;
     }
 
     @Test
     @DisplayName("영속성 전이 테스트")
-    public void cascadeTest(){
+    public void cascadeTest() {
+
         Order order = new Order();
 
-        for(int i=0; i<3; i++){
+        for(int i=0; i<3; i++) {
             Item item = this.createItem();
             itemRepository.save(item);
             OrderItem orderItem = new OrderItem();
@@ -66,14 +70,14 @@ class OrderTest {
             order.getOrderItems().add(orderItem);
             //아직 영속성 컨텍스트에 저장되지 않은 orderitem 엔티티를 order 엔티티에 담아 둡니다.
         }
-        orderRepository.saveAndFlush(order);
-        //order 엔티티를 강제로 DB에 반영
-        em.clear();
+    orderRepository.saveAndFlush(order);
+    //order 엔티티를 강제로 DB에 반영
+    em.clear();
 
-        Order savedOrder = orderRepository.findById(order.getId())
-                .orElseThrow(EntityNotFoundException::new);
-        assertEquals(3, savedOrder.getOrderItems().size());
-    }//실제 itemorder 엔티티 3개가 실제로 데이터 베이스에 저장되는지 확인
+    Order savedOrder = orderRepository.findById(order.getId())
+            .orElseThrow(EntityNotFoundException::new);
+    assertEquals(3, savedOrder.getOrderItems().size());
+    } //실제 itemoreder 엔티티 3개가 실제로 데이터 베이스에 저장됬는지 확인
 
     public Order createOrder(){
         Order order = new Order();
@@ -95,8 +99,8 @@ class OrderTest {
     }
 
     @Test
-    @DisplayName("고아객체 제거 테스")
-    public void orphanRemovalTest(){
+    @DisplayName("고아객체 제거 테스트")
+    public void orphanRemovalTest() {
         Order order = this.createOrder();
         order.getOrderItems().remove(0);
         em.flush();
@@ -104,7 +108,7 @@ class OrderTest {
 
     @Test
     @DisplayName("지연 로딩 테스트")
-    public void lazyLoadingTest(){
+    public void lazyLoadingTest() {
         Order order = this.createOrder();
         Long orderItemId = order.getOrderItems().get(0).getId();
         em.flush();
@@ -112,9 +116,8 @@ class OrderTest {
         OrderItem orderItem = orderItemRepository.findById(orderItemId)
                 .orElseThrow(EntityNotFoundException::new);
         System.out.println("Order class : " + orderItem.getOrder().getClass());
-        System.out.println("============");
+        System.out.println("===========================");
         orderItem.getOrder().getOrderDate();
-        System.out.println("=============");
-
+        System.out.println("===========================");
     }
 }

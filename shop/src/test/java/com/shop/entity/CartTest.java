@@ -16,7 +16,6 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 @Transactional
 @TestPropertySource(locations="classpath:application-test.properties")
@@ -33,7 +32,7 @@ class CartTest {
     @PersistenceContext
     EntityManager em;
 
-    public Member createMember(){
+    public Member createMember() {
         MemberFormDto memberFormDto = new MemberFormDto();
         memberFormDto.setEmail("test@email.com");
         memberFormDto.setName("홍길동");
@@ -41,10 +40,9 @@ class CartTest {
         memberFormDto.setPassword("1234");
         return Member.createMember(memberFormDto, passwordEncoder);
     }
-
     @Test
-    @DisplayName("장바구니 회원 엔티티 매핑 조회")
-    public void findCartAndMemberTest(){
+    @DisplayName("장바구니 회원 엔티티 매핑 조회테스트")
+    public void findCartAndMemberTest() {
         Member member = createMember();
         memberRepository.save(member);
         Cart cart = new Cart();

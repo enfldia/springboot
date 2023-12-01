@@ -2,7 +2,6 @@ package com.shop.service;
 
 import com.shop.dto.ItemFormDto;
 import com.shop.dto.ItemImgDto;
-
 import com.shop.dto.ItemSearchDto;
 import com.shop.dto.MainItemDto;
 import com.shop.entity.Item;
@@ -15,100 +14,95 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class ItemService {
+
     private final ItemRepository itemRepository;
-
     private final ItemImgService itemImgService;
-
     private final ItemImgRepository itemImgRepository;
 
-    public Long saveItem(ItemFormDto itemFormDto, List<MultipartFile> itemImgFileList) throws Exception{
-
+    public Long saveItem(ItemFormDto itemFormDto,
+                         List<MultipartFile> itemImgFileList) throws Exception {
         //상품 등록
-        Item item = itemFormDto.createItem();
+        Item item = itemFormDto.crateItem();
         itemRepository.save(item);
 
-        //이미지등록
-        for(int i=0; i<itemImgFileList.size();i++ ){
+        //이미지 등록
+        for(int i=0;i<itemImgFileList.size();i++) {
             ItemImg itemImg = new ItemImg();
-            itemImg.setItem(item);//해당 이미지 객체에 상품 정보를 연결
-            if(i == 0)
-                itemImg.setRepImgYn("Y"); //이미지넘버가 0 이면 대표이미지
+            itemImg.setItem(item);
+            if(i==0)
+                itemImg.setRepImgYn("Y");
             else
                 itemImg.setRepImgYn("N");
             itemImgService.saveItemImg(itemImg, itemImgFileList.get(i));
+
         }
+
         return item.getId();
     }
-
     @Transactional(readOnly = true)
-    public ItemFormDto getItemDtl(Long itemId){
-        //상품 상세정보를 가져오는 메서드 선언
+    public ItemFormDto getItemDtl(Long itemId) {
+
         List<ItemImg> itemImgList = itemImgRepository.findByItemIdOrderByIdAsc(itemId);
-        // 해당삼품에 연결된 이미지 정보를 id 순서대로 가져온다.
+        //해당 상품 이미지를 조회 해서 등록순으로 가지고 오기 위해서 상품이미지 아이디 오름차순으로 가지고옴
         List<ItemImgDto> itemImgDtoList = new ArrayList<>();
-        //ItemImgDto 객체 리스트를 초기화합니다.
-        for(ItemImg itemImg : itemImgList)    {
+
+        for (ItemImg itemImg : itemImgList) {
             ItemImgDto itemImgDto = ItemImgDto.of(itemImg);
-            // ItemImgDto 클래스에 정의된 of 메서드를 호출  ItemImg -> ItemImgDto 로 변환하여 반환
+            //이미지 엔티티 리스트를 Dto로 변환
             itemImgDtoList.add(itemImgDto);
-            //리스트에 추가
         }
+
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(EntityNotFoundException::new);
-        // 해당 id의 상품정보를 데이터베이스에서 가져옵니다. 없으면 예외처리
+        //해당 id의 상품정보를 데이터베이스에서 가져옵니다. 없으면 예외처리
         ItemFormDto itemFormDto = ItemFormDto.of(item);
-        //상품 정보를 ItemFormDto 로 변환합니다.
+
         itemFormDto.setItemImgDtoList(itemImgDtoList);
-        //상품정보 Dto 에 이미지 정보 DTO 리스트를 설정
         return itemFormDto;
     }
-    public Long updateItem(ItemFormDto itemFormDto, List<MultipartFile> itemImgFileList) throws Exception{
+    public Long updateItem(ItemFormDto itemFormDto,
+                           List<MultipartFile> itemImgFileList) throws Exception {
         //상품 수정
         Item item = itemRepository.findById(itemFormDto.getId())
                 .orElseThrow(EntityNotFoundException::new);
+        //1. 상품등록 화면으로부터 전달받은 상품 아이디를 이용하여 상품엔티티 조회
         item.updateItem(itemFormDto);
-        List<Long> itemImgIds= itemFormDto.getItemImgIds();
-        // 이미지의 id 리스트를  가져와서 itemImgIds -> 이미지 업데이트나 관련작업(조회)
-
-        // 이미지 등록
-        for(int i=0 ; i <  itemImgFileList.size(); i++){
-            itemImgService.updateItemImg(itemImgIds.get(i), itemImgFileList.get(i));
-            //itemImgIds.get(i) -> 상품에 연결된 각이미지 id
-            //itemImgFileList.get(i) -> 새로운 이미지 파일
+        //2. 상품등록 화면으로부터 전달받은 itemFormDto 통해 상품 엔티티 업데이트
+        List<Long> itemImgIds = itemFormDto.getItemImgIds();
+        //itemFormDto에서 항목 이미지 Id 목록을 가져옵니다.
+        //(상품이미지 아이디 리스트를 조회)
+        //이미지 등록
+        for(int i=0;i<itemImgFileList.size();i++) {
+            //if(!StringUtils.isEmpty(itemImgFileList.get(i).getOriginalFilename())) {
+                itemImgService.updateItemImg(itemImgIds.get(i), itemImgFileList.get(i));
+            //}
         }
+        //itemImgFileList를 반복하면서 각 이미지에 대해
+        //itemService의 updateItemImg 메서드를 호출합니다.
+        //get(i) = List나 배열에서 i에 해당하는 요소를 가져오는 메소드
+        //get(0) 첫번째 요소
+        //상품이미지 업데이트를 통해 updateItemImg 메소드
+        //상품이미지 아이디, 상품이미지 파일정보를 파라메타로 전달
         return item.getId();
     }
 
     @Transactional(readOnly = true)
-    public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
+    public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
         return itemRepository.getAdminItemPage(itemSearchDto, pageable);
     }
-
     @Transactional(readOnly = true)
-    public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
+    public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
         return itemRepository.getMainItemPage(itemSearchDto, pageable);
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

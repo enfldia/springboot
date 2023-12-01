@@ -12,7 +12,7 @@
 <th:block layout:fragment="script">
 
     <script th:inline="javascript">
-        function cancelOrder(orderId){
+        function cancelOrder(orderId) {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
 
@@ -20,41 +20,41 @@
             var paramData = {
                 orderId : orderId,
             };
+
             var param = JSON.stringify(paramData);
+
             $.ajax({
-                    url      : url,
-                    type     : "POST",
-                    contentType : "application/json",
-                    data     : param,
-                    beforeSend : function(xhr){
-                        /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
-                        xhr.setRequestHeader(header, token);
-                    },
-                    dataType : "json",
-                    cache   : false,
-                    success  : function(result, status){
-                        alert("주문이 취소 되었습니다.");
-                        location.href='/orders/' + [[${page}]];
+                url      : url,
+                type     : "POST",
+                contentType : "application/json",
+                data     : param,
+                beforeSend : function(xhr){
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType : "json",
+                cache   : false,
+                success  : function(result, status){
+                    alert("주문이 취소 되었습니다.");
+                    location.href='/orders/' + [[${page}]];
                     //서버에서 전달받은 page라는 변수를 클라이언트 측으로 전달하여
                     //현재 페이지 번호를 사용
-                    },
-                    error : function(jqXHR, status, error){
-
-                        if(jqXHR.status == '401'){
-                            alert('로그인 후 이용해주세요');
-                            location.href='/members/login';
-                        } else{
-                            alert(jqXHR.responseText);
-                        }
-
+                },
+                error : function(jqXHR, status, error){
+                    if(jqXHR.status == '401'){
+                        alert('로그인 후 이용해주세요');
+                        location.href='/members/login';
+                    } else{
+                        alert(jqXHR.responseText);
                     }
-                });
-
+                }
+            });
         }
-
     </script>
 
 </th:block>
+
+
 <!-- 사용자 CSS 추가 -->
 <th:block layout:fragment="css">
     <style>
@@ -87,20 +87,25 @@
         }
     </style>
 </th:block>
+
 <div layout:fragment="content" class="content-mg">
 
     <h2 class="mb-4">
         구매 이력
     </h2>
+
     <div th:each="order : ${orders.getContent()}">
+
         <div class="d-flex mb-3 align-self-center">
             <h4 th:text="${order.orderDate} + ' 주문'"></h4>
             <div class="ml-3">
-                <th:block th:if="${order.orderStatus == T(com.shop.constant.OrderStatus).ORDER}">
+                <th:block th:if="${order.orderStatus ==
+            T(com.shop.constant.OrderStatus).ORDER}">
                     <button type="button" class="btn btn-outline-secondary"
                             th:value="${order.orderId}" onclick="cancelOrder(this.value)">주문취소</button>
                 </th:block>
-                <th:block th:unless="${order.orderStatus == T(com.shop.constant.OrderStatus).ORDER}">
+                <th:block th:unless="${order.orderStatus ==
+            T(com.shop.constant.OrderStatus).ORDER}">
                     <h4>(취소 완료)</h4>
                 </th:block>
             </div>
@@ -122,6 +127,7 @@
         </div>
 
     </div>
+
     <div th:with="start=${(orders.number/maxPage)*maxPage + 1}, end=(${(orders.totalPages == 0) ? 1 : (start + (maxPage - 1) < orders.totalPages ? start + (maxPage - 1) : orders.totalPages)})" >
         <ul class="pagination justify-content-center">
 
@@ -143,5 +149,7 @@
 
         </ul>
     </div>
+
 </div>
+
 </html>

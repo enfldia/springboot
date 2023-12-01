@@ -1,6 +1,5 @@
 package com.shop.entity;
 
-
 import com.shop.constant.Role;
 import com.shop.dto.MemberFormDto;
 import lombok.Getter;
@@ -32,11 +31,10 @@ public class Member extends BaseEntity {
     private String address;
 
     @Enumerated(EnumType.STRING)
-
     private Role role;
 
-    public static Member createMember (MemberFormDto memberFormDto,
-                                       PasswordEncoder passwordEncoder){
+    public static Member createMember(MemberFormDto memberFormDto,
+                                      PasswordEncoder passwordEncoder) {
         Member member = new Member();
         member.setName(memberFormDto.getName());
         member.setEmail(memberFormDto.getEmail());
@@ -46,5 +44,4 @@ public class Member extends BaseEntity {
         member.setRole(Role.ADMIN);
         return member;
     }
-
 }

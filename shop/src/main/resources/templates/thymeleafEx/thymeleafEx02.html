@@ -5,22 +5,9 @@
     <title>Title</title>
 </head>
 <body>
-<h1>ItemDetail</h1>
-<!--<p>상품명 :<span th:text="${itemNm}"></span></p>-->
-<!--<p>상품 상세 설명 :<span th:text="${itemDT}"></span></p>-->
-<!--<p>상품 등록일 :  <span th:text="${itemRT}"></span></p>-->
-<!--<p>상품 가격 :<span th:text="${itemPC}"></span></p>-->
-<div>
-    상품명 : <span th:text="${itemDetail.itemNm}"></span>
-</div>
-<div>
-    상품 상세 설명 : <span th:text="${itemDetail.itemDetail}"></span>
-</div>
-<div>
-    상품 등록일 : <span th:text="${itemDetail.regTime}"></span>
-</div>
-<div>
-    상품 가격 : <span th:text="${itemDetail.price}"></span>
-</div>
+    <p th:text="${data.itemDetail}"></p>
+    <p th:text="${data.itemNm}"></p>
+    <p th:text="${data.price}"></p>
+    <p th:text="${data.regTime}"></p>
 </body>
 </html>

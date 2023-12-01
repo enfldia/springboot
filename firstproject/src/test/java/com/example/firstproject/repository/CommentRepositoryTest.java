@@ -27,16 +27,18 @@ class CommentRepositoryTest {
         // 수행
         List<Comment> comments = commentRepository.findByArticleId(articleId);
         // 예상
-        Article article = new Article(4L,"당신의 인생 영화는?","댓글 ㄱ");
-        Comment a = new Comment(1L,article,"Park","굿 윌 헌팅");
-        Comment b = new Comment(2L,article,"Kim","아이 엠 샘");
-        Comment c = new Comment(3L,article,"Choi","쇼생크의 탈출");
-        List<Comment> expected = Arrays.asList(a,b,c);
+        Article article = new Article(4L, "당신의 인생 영화는?", "댓글 ㄱ");
+        Comment a = new Comment(1L, article, "Park", "굿 윌 헌팅");
+        Comment b = new Comment(2L, article, "Kim", "아이 앰 샘");
+        Comment c = new Comment(3L, article, "Choi", "쇼생크의 탈출");
+        List<Comment> expected = Arrays.asList(a, b, c);
+
         // 검증
-        assertEquals(expected.toString(),comments.toString(),"4번 글의 모든 댓글을 출력!");
+        assertEquals(expected.toString(), comments.toString(), "4번 글의 모든 댓글을 출력!");
+
         // 결과 출력
         System.out.println("실제 결과");
-        for(Comment comment:comments){
+        for (Comment comment : comments) {
             System.out.println(comment.toString());
         }
     }
@@ -45,7 +47,7 @@ class CommentRepositoryTest {
     void findByNickname() {
         // 준비
 
-        //수행
+        // 수행
 
         // 예상
 
