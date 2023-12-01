@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+
+<!-- 사용자 CSS 추가 -->
+<!--타임리프에서 링크가 아니라 직접 css를 사용하려면
+<th:block layout:fregment="css">
+<style>
+...
+</style>
+<th:block>
+형태로 써야한다.-->
+<th:block layout:fragment="css">
+    <style>
+        .fieldError {
+            color: #bd2130;
+        }
+    </style>
+</th:block>
+
+<!-- 사용자 스크립트 추가 -->
+<!--타임리프에서 스크립트를 사용하려면
+<th:block layout:fregment="script">
+<script th:inline="javascript">
+...
+</script>
+</>th:block>
+형태로 사용
+-->
+<th:block layout:fragment="script">
+
+    <script th:inline="javascript">
+        <!--
+        도큐먼트에 ready라는 메소드를 만드는데.
+        controller에서 ${errorMessage} 가 넘어오면 var 변수 errorMessage에 값을 넣고.
+        if로 에러매세지가 null이 아니면
+        errorMessage 값을 경고창으로 띄운다.
+        -->
+        $(document).ready(function(){
+            var errorMessage = [[${errorMessage}]];
+            if(errorMessage != null){
+                alert(errorMessage);
+            }
+        });
+    </script>
+
+</th:block>
+<!--레이아웃으로 fragment='content">으로 내용을 연동 시킨다.-->
+<div layout:fragment="content">
+
+<!--action으로 /members/new 로 값을 보내는데.controller에서 보낸 ${memberFormDto} 객체를 받아서 post 방식으로 보낸다.그리고 이것이 Form이라는걸 role로 알려준다.-->
+    <form action="/members/new" role="form" method="post"  th:object="${memberFormDto}">
+        <!--부트스트랩의 form-group을 이용행서 폼의 틀을 선언한다.-->
+        <div class="form-group">
+            <!--for를 이용해 라벨을 클릭하면 해당하는 입력 칸 선택-->
+            <label th:for="name">이름</label>
+            <!--text 타입에 memberFormDto.name에 부트스트램의 form-control로 placeholder로는 이름을 입력해주세요 를 나타낸다.
+            th:field="*{입력된 변수명}"는 폼태그에서 th:object 에 작성해서 매핑된 변수명.입력된 변수명 와 같다.
+            여기선 memberFormDto.name 이다.-->
+            <input type="text" th:field="*{name}" class="form-control" placeholder="이름을 입력해주세요">
+            <!--th:if=""형태로 if문 사용 가능
+            맴버폼디티오.name에 애러가 있다면 errors="*{name}"으로 태그안에 있는 문자열을 name 필드에 관련된 에러 메시지로 치환하고,fieldError class를 추가한다.-->
+            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fieldError">Incorrect data</p>
+        </div>
+        <div class="form-group">
+            <label th:for="email">이메일주소</label>
+            <input type="email" th:field="*{email}" class="form-control"
+                   placeholder="이메일을 입력해주세요">
+            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+               class="fieldError">Incorrect data</p>
+        </div>
+        <div class="form-group">
+            <label th:for="password">비밀번호</label>
+            <input type="password" th:field="*{password}" class="form-control" placeholder="비밀번호 입력">
+            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError">Incorrect data</p>
+        </div>
+        <div class="form-group">
+            <label th:for="address">주소</label>
+            <input type="text" th:field="*{address}" class="form-control" placeholder="주소를 입력해주세요">
+            <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="fieldError">Incorrect data</p>
+        </div>
+        <div style="text-align: center">
+            <!--버튼을 누르면 type="submit"이기 때문에 action에 설정한 경로로 값을 보낸다.-->
+            <button type="submit" class="btn btn-primary" style="">Submit</button>
+        </div>
+        <!--csrf.parameterName 의 값을 받지만 보이지 않게 한다.
+        CSRF : cross site request forgery는 사이트간 위조해 수정,등록, 삭제 등의 행위를 막는다.-->
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+    </form>
+
+</div>
+
+</html>
