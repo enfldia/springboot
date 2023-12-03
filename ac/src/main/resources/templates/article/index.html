@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+  <thead>
+  <tr>
+    <th>no</th>
+    <th>title</th>
+    <th>content</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="articleList,status : ${articleList}">
+    <td th:text="${status.index}"></td>
+    <td>
+      <a th:href="@{/articles/{id}(id = ${articleList.id})}"  th:text="${articleList.title}"></a>
+    </td>
+    <th th:text="${articleList.content}"></th>
+  </tr>
+  </tbody>
+</table>
+<button onclick="location.href='/articles/new'">새로 작성</button>
+<button onclick="location.href='/'">메인으로</button>
+</body>
+</html>

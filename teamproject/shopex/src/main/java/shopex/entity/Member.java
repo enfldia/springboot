@@ -43,7 +43,7 @@ public class Member {
         //memberFormDto에서 받은 password를 암호화하고 member에 입력
         String password = passwordEncoder.encode(memberFormDto.getPassword());
         member.setPassword(password);
-        member.setRole(Role.USER);
+        member.setRole(Role.ADMIN);
         return member;
     //생성된 Entity member 는 데이터베이스랑 연결이 되는 MemberService에서 사용한다.
     }

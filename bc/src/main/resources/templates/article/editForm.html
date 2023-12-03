@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>수정하기</h1>
+<form action="/articles/update" method="post">
+  <input type="hidden" name="id" th:value="${article.id}">
+  <div>
+    title
+    <input type="text" name="title" th:value="${article.title}">
+  </div>
+  <div>
+    content
+    <textarea name="content" cols="3" th:text="${article.content}"></textarea>
+  </div>
+  <input type="submit" value="수정">
+  <input type="button" value="뒤로가기" th:onclick="|location.href='@{/articles/{id}(id=${article.id})}'|" >
+</form>
+</body>
+</html>

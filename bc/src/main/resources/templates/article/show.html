@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>조회</h1>
+<div>
+  title : <span th:text="${article.title}"></span>
+</div>
+<div>
+  content : <span th:text="${article.content}"></span>
+</div>
+<button th:onclick="|location.href='@{/articles/{id}/edit(id=${article.id})}'|">수정</button>
+<button onclick="location.href='/articles'">목록</button>
+</body>
+</html>

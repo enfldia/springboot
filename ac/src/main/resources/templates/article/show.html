@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    title : <span th:text="${article.title}"></span>
+</div>
+<div>
+  content : <span th:text="${article.content}" ></span>
+</div>
+<div>
+<!--    <button th:onclick="|location.href='@{/articles/{id}/edit(id=${article.id})}'|">수정</button>-->
+    <button th:onclick="'location.href=\'' + @{/articles/{id}/edit(id=${article.id})} + '\''">수정</button>
+    <button onclick="location.href='/articles'">목록보기</button>
+</div>
+</body>
+</html>
